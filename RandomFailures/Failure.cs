@@ -74,7 +74,7 @@ namespace RandomFailures
 		{ 
 			// Do nothing here.
 			if(parentPart != null)
-				Debug.Log("RandomFailures: " + failureName + " occured on " + parentPart.partName + "!");
+				Debug.Log("RandomFailures: " + failureName + " occured on " + parentPart.partInfo.title + "!");
 		}
 	}
 }

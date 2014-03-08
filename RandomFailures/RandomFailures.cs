@@ -44,6 +44,9 @@ namespace RandomFailures
 				MonoBehaviour.print("Random Failures System State: " + m_enabled.ToString());
 			}
 
+			if (MapView.fetch != null)
+				MapView.fetch.max3DlineDrawDist = 50000f;
+
 			if (m_enabled && FlightGlobals.fetch != null && FlightGlobals.fetch.activeVessel != null)
 			{
 				if (m_counter == 13)
@@ -54,11 +57,11 @@ namespace RandomFailures
 						if (part.Modules.Contains("ModuleFailureInfo"))
 						{
 							ModuleFailureInfo failureInfo = (part.Modules["ModuleFailureInfo"] as ModuleFailureInfo);
-							foreach (Failure failure in failureInfo.m_failures)
-							{
-								if(failure.parentPart != null)
-									Debug.Log(failure.parentPart.partName + ": " + failure.GetType().Name);								
-							}
+							//foreach (Failure failure in failureInfo.m_failures)
+							//{
+							//    if(failure.parentPart != null)
+							//        Debug.Log(failure.parentPart.partName + ": " + failure.GetType().Name);								
+							//}
 						}
 					}
 				}
@@ -134,6 +137,39 @@ namespace RandomFailures
 					newFailure.universeTimeCreated = Planetarium.GetUniversalTime(); 
 					newFailure.SetParentModule(part.Modules["ModuleEngines"]);
 					if (!failureInfo.Contains(EngineExplosionFailure.Compare, newFailure))
+					{
+						failureInfo.m_failures.Add(newFailure);
+					}
+				}
+				if (part.Modules.Contains("ModuleEnginesFX"))
+				{
+					Debug.Log("RandomFailures: Found an engine!");
+					EngineExplosionFailure newFailure = new EngineExplosionFailure();
+					newFailure.universeTimeCreated = Planetarium.GetUniversalTime();
+					newFailure.SetParentModule(part.Modules["ModuleEnginesFX"]);
+					if (!failureInfo.Contains(EngineExplosionFailure.Compare, newFailure))
+					{
+						failureInfo.m_failures.Add(newFailure);
+					}
+				}
+				if (part.Modules.Contains("ModuleEngines"))
+				{
+					Debug.Log("RandomFailures: Found an engine!");
+					EngineVibrationFailure newFailure = new EngineVibrationFailure();
+					newFailure.universeTimeCreated = Planetarium.GetUniversalTime();
+					newFailure.SetParentModule(part.Modules["ModuleEngines"]);
+					if (!failureInfo.Contains(EngineVibrationFailure.Compare, newFailure))
+					{
+						failureInfo.m_failures.Add(newFailure);
+					}
+				}
+				if (part.Modules.Contains("ModuleEnginesFX"))
+				{
+					Debug.Log("RandomFailures: Found an engine!");
+					EngineVibrationFailure newFailure = new EngineVibrationFailure();
+					newFailure.universeTimeCreated = Planetarium.GetUniversalTime();
+					newFailure.SetParentModule(part.Modules["ModuleEnginesFX"]);
+					if (!failureInfo.Contains(EngineVibrationFailure.Compare, newFailure))
 					{
 						failureInfo.m_failures.Add(newFailure);
 					}

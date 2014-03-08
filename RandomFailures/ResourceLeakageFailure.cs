@@ -70,25 +70,26 @@ namespace RandomFailures
 
 			if (parentPart.Resources.Contains(resourceName))
 			{
-				Debug.Log("ResourceLeakageFailure::OnJudge(): geeForce_immediate = " + parentPart.vessel.geeForce_immediate.ToString());
-				Debug.Log("ResourceLeakageFailure::OnJudge(): surfaceAreas = " + parentPart.surfaceAreas.ToString());
+				//Debug.Log("ResourceLeakageFailure::OnJudge(): geeForce_immediate = " + parentPart.vessel.geeForce_immediate.ToString());
+				//Debug.Log("ResourceLeakageFailure::OnJudge(): surfaceAreas = " + parentPart.surfaceAreas.ToString());
 				
 				float totalVolume = Convert.ToSingle(parentPart.Resources[resourceName].maxAmount);
 				float surfaceArea = Mathf.Pow(totalVolume, 2.0f / 3.0f);
-				Debug.Log("ResourceLeakageFailure::OnJudge(): surfAreaByVolume = " + surfaceArea.ToString());
+				float dryMass = parentPart.mass;
+				//Debug.Log("ResourceLeakageFailure::OnJudge(): surfAreaByVolume = " + surfaceArea.ToString());
 
 				if (hasTriggered == true)
 					return true;
 
-				if (parentPart.vessel.geeForce_immediate > 180.0f / surfaceArea)
+				if (parentPart.vessel.geeForce_immediate > 1500.0f * dryMass / surfaceArea)
 				{
-					float probability = (Convert.ToSingle(parentPart.vessel.geeForce_immediate) / (180.0f / surfaceArea) - 1.0f) * 0.5f;
-					probability *= (1.0f + Convert.ToSingle(Math.Log10(timeElapsed / 1000.0 + 1)));
+					float probability = (Convert.ToSingle(parentPart.vessel.geeForce_immediate) / (1500.0f * dryMass / surfaceArea) - 1.0f) * 0.5f;
+					probability *= (1.0f + Convert.ToSingle(Math.Log10(timeElapsed / 10000.0 + 1)));
 					if (UnityEngine.Random.Range(0.0f, 1.0f) < probability)
 					{
 						severity = UnityEngine.Random.Range(0.0f, 1.0f);
 						hasTriggered = true;
-						Debug.Log(failureName + " on " + parentPart.partName);
+						Debug.Log(failureName + " on " + parentPart.partInfo.title);
 						return true;
 					}
 				}

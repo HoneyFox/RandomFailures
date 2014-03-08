@@ -40,12 +40,12 @@ namespace RandomFailures
 		{
 			if (parentPart == null) return false;
 
-			Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): temparature = " + parentPart.temperature.ToString());
-			Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): maxTemp = " + parentPart.maxTemp.ToString());
+			//Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): temparature = " + parentPart.temperature.ToString());
+			//Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): maxTemp = " + parentPart.maxTemp.ToString());
 
-			if (parentPart.temperature > parentPart.maxTemp * 0.5f)
+			if (parentPart.temperature > parentPart.maxTemp * 0.75f)
 			{
-				if (UnityEngine.Random.Range(0.0f, 1.0f) < ((parentPart.temperature / parentPart.maxTemp) - 0.5f) * 0.00001f)
+				if (UnityEngine.Random.Range(0.0f, 1.0f) < ((parentPart.temperature / parentPart.maxTemp) - 0.7f) * 0.00001f)
 					return true;
 			}
 			return false;
@@ -55,7 +55,7 @@ namespace RandomFailures
 		{
 			if (parentPart == null) return;
 			
-			Debug.Log("RandomFailures: " + failureName + " on " + parentPart.partName + "!");
+			Debug.Log("RandomFailures: " + failureName + " on " + parentPart.partInfo.title + "!");
 			parentPart.force_activate();
 		}
 	}

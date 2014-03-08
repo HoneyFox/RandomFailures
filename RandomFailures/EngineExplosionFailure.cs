@@ -20,7 +20,7 @@ namespace RandomFailures
 
 		public override void SetParentModule(PartModule module)
 		{
-			if (module is ModuleEngines)
+			if (module is ModuleEngines || module is ModuleEnginesFX)
 			{
 				parentPart = module.part;
 				parentPartModule = module;
@@ -38,18 +38,20 @@ namespace RandomFailures
 
 			if(part.Modules.Contains("ModuleEngines"))
 				SetParentModule(part.Modules["ModuleEngines"]);
+			else if (part.Modules.Contains("ModuleEnginesFX"))
+				SetParentModule(part.Modules["ModuleEnginesFX"]);
 		}
 
 		public override bool OnJudge()
 		{
 			if (parentPart == null) return false;
 
-			Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): temparature = " + parentPart.temperature.ToString());
-			Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): maxTemp = " + parentPart.maxTemp.ToString());
+			//Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): temparature = " + parentPart.temperature.ToString());
+			//Debug.Log("RandomFailures: EngineExplosionFailure::OnJudge(): maxTemp = " + parentPart.maxTemp.ToString());
 
 			if (parentPart.temperature > parentPart.maxTemp * 0.75f)
 			{
-				if (UnityEngine.Random.Range(0.0f, 1.0f) < ((parentPart.temperature / parentPart.maxTemp) - 0.75f) * 0.0001f)
+				if (UnityEngine.Random.Range(0.0f, 1.0f) < ((parentPart.temperature / parentPart.maxTemp) - 0.7f) * 0.0001f)
 				{
 					hasTriggered = true;
 					return true;
@@ -62,7 +64,7 @@ namespace RandomFailures
 		{
 			if (parentPart == null) return;
 			
-			Debug.Log("RandomFailures: " + failureName + " on " + parentPart.partName + "!");
+			Debug.Log("RandomFailures: " + failureName + " on " + parentPart.partInfo.title + "!");
 			parentPart.explode();
 		}
 	}
